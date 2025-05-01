@@ -10,13 +10,16 @@ function App() {
   useEffect(() => {
     const storedStudents = localStorage.getItem("students");
     if (!storedStudents) {
-      localStorage.setItem("students", JSON.stringify([
-        { fullName: "John Doe", studentId: 101 },
-        { fullName: "Jane Smith", studentId: 102 },
-        { fullName: "Bob Johnson", studentId: 103 },
-        { fullName: "Alice Brown", studentId: 104 },
-        { fullName: "Charlie Wilson", studentId: 105 },
-      ]));
+      localStorage.setItem(
+        "students",
+        JSON.stringify([
+          { fullName: "John Doe", studentId: 101 },
+          { fullName: "Jane Smith", studentId: 102 },
+          { fullName: "Bob Johnson", studentId: 103 },
+          { fullName: "Alice Brown", studentId: 104 },
+          { fullName: "Charlie Wilson", studentId: 105 },
+        ])
+      );
     }
   }, []);
 

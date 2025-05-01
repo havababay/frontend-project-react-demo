@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
+import { addStudent } from "./firebase/student";
 
 function StudentsForm() {
   const navigate = useNavigate();
@@ -27,15 +28,9 @@ function StudentsForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const storedStudents = localStorage.getItem("students");
-    const existingStudents = storedStudents ? JSON.parse(storedStudents) : [];
-
-    const updatedStudents = [...existingStudents, values];
-
-    localStorage.setItem("students", JSON.stringify(updatedStudents));
-
-    console.log("Form submitted!", values);
-    navigate("/students");
+    addStudent(values).then(() => {
+      navigate("/students");
+    });
   };
 
   return (
