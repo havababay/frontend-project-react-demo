@@ -9,16 +9,19 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
+import { listStudents } from "./firebase/student";
+import LinearProgress from "@mui/material/LinearProgress";
 
 export default function StudentsList() {
   useEffect(() => {
-    const storedStudents = localStorage.getItem("students");
-    if (storedStudents) {
-      setStudents(JSON.parse(storedStudents));
-    }
+    listStudents().then((students) => {
+      setStudents(students);
+      setIsLoading(false);
+    });
   }, []);
 
   const [students, setStudents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -26,9 +29,16 @@ export default function StudentsList() {
     navigate("/student");
   };
 
-  return (
+  return isLoading ? (
+    <Box style={{ display: "flex"}}>
+      <LinearProgress
+        variant="indeterminate"
+        style={{ width: "100%"}}
+      />
+    </Box>
+  ) : (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-start", my:1 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-start", my: 1 }}>
         <Button variant="contained" onClick={handleAddStudent}>
           New Student
         </Button>

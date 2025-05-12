@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { addStudent } from "./firebase/student";
+import LinearProgress from '@mui/material/LinearProgress';
 
 function StudentsForm() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function StudentsForm() {
 
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -28,12 +30,18 @@ function StudentsForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    setLoading(true);
     addStudent(values).then(() => {
+      setLoading(false);
       navigate("/students");
     });
   };
 
-  return (
+  return loading ? (
+    <Box sx={{ display: "flex" }}>
+      <LinearProgress />
+    </Box>
+  ) : (
     <Box
       sx={{
         display: "flex",
@@ -75,10 +83,12 @@ function StudentsForm() {
               name="studentId"
               onChange={handleChange}
               value={values.studentId}
-              helperText={errors.studentId ? "Student ID must be greater than 100" : ""}
+              helperText={
+                errors.studentId ? "Student ID must be greater than 100" : ""
+              }
               type="number"
               slotProps={{
-                htmlInput: { min: 101},
+                htmlInput: { min: 101 },
               }}
             />
           </Grid>
